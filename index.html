@@ -1,72 +1,152 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Frohe Weihnachten</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weihnachtsgruß</title>
 
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            font-family: "Georgia", serif;
-        }
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        body {
-            background-image: url("Weihnachten-RM.jpeg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
 
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.55);
-            padding: 40px 60px;
-            border-radius: 12px;
-            text-align: center;
-            color: #ffffff;
-            max-width: 700px;
-        }
+      background-image: url("Weihnachten-RM.jpeg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
 
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
 
-        p {
-            font-size: 1.4rem;
-            line-height: 1.6;
-            margin: 0;
-        }
+    /* dunkler Overlay für bessere Lesbarkeit */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 0;
+    }
 
-        @media (max-width: 600px) {
-            .overlay {
-                padding: 25px;
-            }
+    /* Schneefall-Canvas */
+    #snow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
 
-            h1 {
-                font-size: 2.2rem;
-            }
+    .card {
+      position: relative;
+      z-index: 3;
 
-            p {
-                font-size: 1.1rem;
-            }
-        }
-    </style>
+      background: rgba(0, 0, 0, 0.6);
+      color: #ffffff;
+      max-width: 850px;
+      width: 100%;
+      padding: 32px;
+      border-radius: 18px;
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #ffdf8a;
+      font-size: clamp(32px, 5vw, 48px);
+    }
+
+    p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+
+    strong {
+      color: #ffd966;
+    }
+  </style>
 </head>
+
 <body>
+  <div class="overlay"></div>
+  <canvas id="snow"></canvas>
 
-    <div class="overlay">
-        <h1>Frohe Weihnachten</h1>
-        <p>
-            Ich wünsche dir und deinen Liebsten eine besinnliche Weihnachtszeit,<br>
-            ruhige Feiertage voller Wärme und einen guten Start in ein neues Jahr.<br><br>
-            Möge diese Zeit Raum für Dankbarkeit, Freude und neue Kraft geben.
-        </p>
-    </div>
+  <div class="card">
+    <h1>Frohe Weihnachten ihr kleinen Schokohasen 🎄</h1>
 
+    <p>
+      ich wünsche euch allen <strong>frohe, ruhige und erholsame Weihnachten</strong>
+      sowie schöne Feiertage im Kreise eurer Familien und Liebsten.
+    </p>
+
+    <p>
+      Für das kommende Jahr wünsche ich euch einen <strong>guten Rutsch</strong>,
+      vor allem jedoch <strong>Gesundheit</strong>, <strong>Glück</strong>,
+      <strong>Erfolg</strong> und viele <strong>positive Momente</strong> –
+      beruflich wie privat.
+    </p>
+
+    <p>
+      Vielen Dank für euren täglichen Einsatz, euer Engagement und die Zusammenarbeit
+      im vergangenen Jahr. Das ist nicht selbstverständlich und wird sehr geschätzt.
+    </p>
+
+    <p>
+      Genießt die Feiertage, kommt gut ins neue Jahr und bleibt gesund!
+    </p>
+
+    <p>
+      Herzliche Grüße<br>
+      <strong>Jens</strong>
+    </p>
+  </div>
+
+  <!-- Schneefall Script -->
+  <script>
+    const canvas = document.getElementById("snow");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    const flakes = Array.from({ length: 120 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 3 + 1,
+      s: Math.random() * 1 + 0.5
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "rgba(255,255,255,0.8)";
+
+      flakes.forEach(f => {
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        f.y += f.s;
+        if (f.y > canvas.height) {
+          f.y = -5;
+          f.x = Math.random() * canvas.width;
+        }
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
 </body>
 </html>
